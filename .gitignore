@@ -1,0 +1,14 @@
+## GITIGNORE ##
+#Gradle
+.gradle
+build/
+#IntelliJ IDEA
+.idea
+out/
+*.iml
+*.lck
+#JAVA
+*.jar
+*.class
+*.war
+*.ear
