@@ -1,19 +1,29 @@
 package br.com.fulltime.app.model;
 
-import br.com.fulltime.app.service.Conversor;
-
 public class Interpretador {
 
-    public static boolean validarHeader (String[] array){
+    public static boolean validarHeader(String[] array) {
         return array[0].equals("7B");
     }
 
-    public static int identificarTamanho(String[] array){
+    public static int getTamanho(String[] array) {
         return Integer.parseInt(array[1], 16);
     }
 
-    public static int identificarComando(String[] array){
+    public static int getComando(String[] array) {
         return Integer.parseInt(array[3], 16);
+    }
+
+    public static String[] getDados(String[] array) {
+        var comando = getComando(array);
+        switch (comando) {
+            case 33 -> {
+                return Dados.lerAutenticacao(array);
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
 }
