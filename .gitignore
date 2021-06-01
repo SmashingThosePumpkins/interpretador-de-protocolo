@@ -2,13 +2,22 @@
 #Gradle
 .gradle
 build/
+
 #IntelliJ IDEA
 .idea
 out/
 *.iml
 *.lck
+/out/
+
 #JAVA
 *.jar
 *.class
 *.war
 *.ear
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xm
