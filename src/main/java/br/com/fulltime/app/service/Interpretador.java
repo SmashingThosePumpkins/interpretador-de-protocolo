@@ -6,4 +6,8 @@ public class Interpretador {
         return array[0] == 0x7B;
     }
 
+    public static int identificarTamanho(String[] array){
+        return Integer.parseInt(array[1], 16);
+    }
+
 }

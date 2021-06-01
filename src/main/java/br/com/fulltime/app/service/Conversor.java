@@ -28,4 +28,9 @@ public class Conversor {
 
         return data;
     }
+
+    public static String[] toHexArray(String rawData) {
+        return rawData.split(" ");
+    }
+
 }
