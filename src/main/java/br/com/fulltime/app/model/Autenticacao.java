@@ -110,28 +110,28 @@ public class Autenticacao {
     private static String aplicarOperadora(String[] array, int index) {
         switch (array[index]) {
             case "00" -> {
-                return "OPERADORA 0";
+                return "VIVO";
             }
             case "01" -> {
-                return "OPERADORA 1";
+                return "BRASIL TELECOM";
             }
             case "02" -> {
-                return "OPERADORA 2";
+                return "CLARO";
             }
             case "03" -> {
-                return "OPERADORA 3";
+                return "OI";
             }
             case "04" -> {
-                return "OPERADORA 4";
+                return "TIM";
             }
             case "05" -> {
-                return "OPERADORA 5";
+                return "TELEMIG CELULAR";
             }
             case "06" -> {
-                return "OPERADORA 6";
+                return "N/A";
             }
             case "07" -> {
-                return "OPERADORA 7";
+                return "CONFIGURAÇÕES DA OPERADORA PERSONALIZADA";
             }
             default -> throw new NoSuchElementException();
         }
