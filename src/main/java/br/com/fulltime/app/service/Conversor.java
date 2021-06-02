@@ -1,5 +1,7 @@
 package br.com.fulltime.app.service;
 
+import java.util.Vector;
+
 public class Conversor {
 
     private static final char[] hexCode = "0123456789ABCDEF".toCharArray();
@@ -30,7 +32,22 @@ public class Conversor {
     }
 
     public static String[] toHexArray(String rawData) {
-        return rawData.split(" ");
+        String[] data;
+        if (rawData.contains(" ")) {
+            data = rawData.split(" ");
+        } else if (rawData.contains("\\")) {
+            data = rawData.split("\\\\");
+        } else {
+            throw new RuntimeException();
+        }
+
+        if (data[0].isEmpty()) {
+            var temp = new String[data.length - 1];
+            System.arraycopy(data, 1, temp, 0, data.length - 1);
+            return temp;
+        }
+
+        return data;
     }
 
 }

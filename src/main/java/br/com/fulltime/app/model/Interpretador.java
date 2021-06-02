@@ -20,6 +20,9 @@ public class Interpretador {
             case 33 -> {
                 return Autenticacao.getDados(array);
             }
+            case 36 -> {
+                return Evento.getDados(array);
+            }
             default -> {
                 return null;
             }
