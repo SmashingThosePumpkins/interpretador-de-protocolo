@@ -2,28 +2,23 @@ package br.com.fulltime.app.model;
 
 import java.util.NoSuchElementException;
 
-public class Dados {
+public class Autenticacao {
 
-    public static String[] lerAutenticacao(String[] array) {
-        String numSerie, imei, mac, modelo, versao, ip, simCard, via, operadora;
+    public static String[] getDados(String[] array) {
 
-        numSerie = aplicarNumero(array, 4, 13);
-        imei = aplicarNumero(array, 14, 28);
-        mac = aplicarNumero(array, 29, 40);
-        modelo = aplicarModelo(array, 41);
-        versao = aplicarVersao(array, 42);
-        ip = aplicarIP(array, 45);
-        simCard = aplicarSIMCARD(array, 46);
-        via = aplicarVia(array, 47);
-        operadora = aplicarOperadora(array, 48);
+        String numSerie = aplicarNumero(array, 4, 13),
+            imei = aplicarNumero(array, 14, 28),
+            mac = aplicarNumero(array, 29, 40),
+            modelo = aplicarModelo(array, 41),
+            versao = aplicarVersao(array, 42),
+            ip = aplicarIP(array, 45),
+            simCard = aplicarSIMCARD(array, 46),
+            via = aplicarVia(array, 47),
+            operadora = aplicarOperadora(array, 48);
 
 
         return new String[]{numSerie, imei, mac, modelo, versao, ip, simCard, via, operadora};
     }
-
-//    public static String[] lerEvento(String[] array) {
-//
-//    }
 
     private static String aplicarModelo(String[] array, int index) {
         switch (array[index]) {

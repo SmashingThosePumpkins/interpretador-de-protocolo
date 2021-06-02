@@ -18,7 +18,7 @@ public class Interpretador {
         var comando = getComando(array);
         switch (comando) {
             case 33 -> {
-                return Dados.lerAutenticacao(array);
+                return Autenticacao.getDados(array);
             }
             default -> {
                 return null;
