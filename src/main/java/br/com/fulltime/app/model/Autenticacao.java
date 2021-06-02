@@ -6,9 +6,9 @@ public class Autenticacao {
 
     public static String[] getDados(String[] array) {
 
-        String numSerie = aplicarNumero(array, 4, 13),
-            imei = aplicarNumero(array, 14, 28),
-            mac = aplicarNumero(array, 29, 40),
+        String numSerie = aplicarNumero(array, 4, 14),
+            imei = aplicarNumero(array, 14, 29),
+            mac = aplicarNumero(array, 29, 41),
             modelo = aplicarModelo(array, 41),
             versao = aplicarVersao(array, 42),
             ip = aplicarIP(array, 45),
@@ -59,11 +59,12 @@ public class Autenticacao {
     }
 
     private static String aplicarNumero(String[] array, int from, int to) {
+//        Arrays.copyOfRange(array, from, to);
         StringBuilder stringBuilder = new StringBuilder();
         do {
             stringBuilder.append((char) Integer.parseInt(array[from], 16));
             from++;
-        } while (from < (to - 1));
+        } while (from <= (to - 1));
         return stringBuilder.toString();
     }
 
