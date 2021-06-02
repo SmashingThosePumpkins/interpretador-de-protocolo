@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class Autenticacao {
 
-    public static String[] getDados(String[] array) {
+    public String[] getDados(String[] array) {
 
         String numSerie = aplicarNumero(array, 4, 14),
             imei = aplicarNumero(array, 14, 29),
@@ -20,7 +20,7 @@ public class Autenticacao {
         return new String[]{numSerie, imei, mac, modelo, versao, ip, simCard, via, operadora};
     }
 
-    private static String aplicarModelo(String[] array, int index) {
+    private String aplicarModelo(String[] array, int index) {
         switch (array[index]) {
             case "A0" -> {
                 return "ACTIVE 32 DUO";
@@ -44,7 +44,7 @@ public class Autenticacao {
         }
     }
 
-    private static String aplicarVersao(String[] array, int index) {
+    private String aplicarVersao(String[] array, int index) {
         var val1 = (char) Integer.parseInt(array[index], 16);
         var val2 = (char) Integer.parseInt(array[index + 1], 16);
         var val3 = (char) Integer.parseInt(array[index + 2], 16);
@@ -58,7 +58,7 @@ public class Autenticacao {
         return String.format("v%s.%s.%s", val1, val2, valB3);
     }
 
-    private static String aplicarNumero(String[] array, int from, int to) {
+    private String aplicarNumero(String[] array, int from, int to) {
 //        Arrays.copyOfRange(array, from, to);
         StringBuilder stringBuilder = new StringBuilder();
         do {
@@ -68,7 +68,7 @@ public class Autenticacao {
         return stringBuilder.toString();
     }
 
-    private static String aplicarIP(String[] array, int index) {
+    private String aplicarIP(String[] array, int index) {
         switch (array[index]) {
             case "01" -> {
                 return "IP1";
@@ -80,7 +80,7 @@ public class Autenticacao {
         }
     }
 
-    private static String aplicarSIMCARD(String[] array, int index) {
+    private String aplicarSIMCARD(String[] array, int index) {
         switch (array[index]) {
             case "01" -> {
                 return "SIM1";
@@ -95,7 +95,7 @@ public class Autenticacao {
         }
     }
 
-    private static String aplicarVia(String[] array, int index) {
+    private String aplicarVia(String[] array, int index) {
         switch (array[index]) {
             case "00" -> {
                 return "GPRS";
@@ -107,7 +107,7 @@ public class Autenticacao {
         }
     }
 
-    private static String aplicarOperadora(String[] array, int index) {
+    private String aplicarOperadora(String[] array, int index) {
         switch (array[index]) {
             case "00" -> {
                 return "VIVO";

@@ -12,9 +12,6 @@ public class Main {
         Main main = new Main();
         main.start();
 
-//        for (int i = 0; i < 8; i++) {
-//        }
-
     }
 
     private void start() {
@@ -33,10 +30,13 @@ public class Main {
 
         System.out.println("------------------");
 
-        var hexArrayEvent = Conversor.toHexArray("\\7B\\18\\01\\24\\31\\30\\31\\30\\31\\33\\30\\32\\30\\31\\30\\30\\30\\00\\00\\2C\\AA\\01\\01\\F1\\");
+        var hexArrayEvent = Conversor.toHexArray("\\7B\\18\\01\\24\\31\\30\\31\\30\\31\\33\\30\\32\\30\\31\\30\\30\\30\\00\\00\\2C\\AA\\01\\01\\F1");
         System.out.println(interpretador.validarHeader(hexArrayEvent));
         System.out.println(interpretador.getTamanho(hexArrayEvent));
         System.out.println(interpretador.getComando(hexArrayEvent));
+        for (int i = 0; i < 8; i++) {
+            System.out.println(interpretador.getDados(hexArrayEvent)[i]);
+        }
 
     }
 

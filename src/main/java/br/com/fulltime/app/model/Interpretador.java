@@ -18,10 +18,12 @@ public class Interpretador {
         var comando = getComando(array);
         switch (comando) {
             case 33 -> {
-                return Autenticacao.getDados(array);
+                var autenticacao = new Autenticacao();
+                return autenticacao.getDados(array);
             }
             case 36 -> {
-                return Evento.getDados(array);
+                var evento = new Evento();
+                return evento.getDados(array);
             }
             default -> {
                 return null;
