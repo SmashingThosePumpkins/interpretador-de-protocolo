@@ -2,7 +2,7 @@ package br.com.fulltime.app.model;
 
 import java.util.NoSuchElementException;
 
-public class Evento {
+public class Evento implements Comando {
 
     public String[] getDados(String[] array) {
 
