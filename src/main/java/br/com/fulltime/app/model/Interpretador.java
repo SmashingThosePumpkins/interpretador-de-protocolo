@@ -2,20 +2,26 @@ package br.com.fulltime.app.model;
 
 public class Interpretador {
 
-    public boolean validarHeader(String[] array) {
+    String[] array;
+
+    public Interpretador (String[] array) {
+        this.array = array;
+    }
+
+    public boolean validarHeader() {
         return array[0].equals("7B");
     }
 
-    public int getTamanho(String[] array) {
+    public int getTamanho() {
         return Integer.parseInt(array[1], 16);
     }
 
-    public int getComando(String[] array) {
+    public int getComando() {
         return Integer.parseInt(array[3], 16);
     }
 
-    public String[] getDados(String[] array) {
-        var comando = getComando(array);
+    public String[] getDados() {
+        var comando = getComando();
         switch (comando) {
             case 33 -> {
                 var autenticacao = new Autenticacao();
