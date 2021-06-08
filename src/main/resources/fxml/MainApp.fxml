@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="br.com.fulltime.app.MainAppController" prefHeight="400.0" prefWidth="600.0">
+   <TextField fx:id="input" layoutX="14.0" layoutY="362.0" prefHeight="24.0" prefWidth="398.0"
+              promptText="Mensagem HEX"/>
+   <Button fx:id="botaoInterpretar" layoutX="422.0" layoutY="362.0" mnemonicParsing="false"
+           onAction="#onClickDisplayDados" prefHeight="24.0" prefWidth="164.0" text="Interpretar Mensagem"/>
+   <TextArea fx:id="display" editable="false" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT"
+             prefHeight="335.0" prefWidth="569.0" promptText="A mensagem interpretada aparecerá aqui."/>
+</AnchorPane>
