@@ -49,7 +49,7 @@ public class MainAppController implements Initializable {
 
             stringBuilder.append("==========================\n");
             stringBuilder.append("TAMANHO DO PACOTE: ").append(interpretador.getTamanho()).append("\n");
-            stringBuilder.append("COMANDO: ").append(interpretador.getComando()).append("\n");
+            stringBuilder.append("COMANDO: ").append(interpretador.getComando(true)).append("\n");
             //        stringBuilder.append("SEQUÊNCIA: " + interpretador.getSequencia() + "\n");
             stringBuilder.append("==========================\n");
             stringBuilder.append(interpretador.getDadosFormatados());
