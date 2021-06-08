@@ -3,12 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="br.com.fulltime.app.MainAppController" prefHeight="400.0" prefWidth="600.0">
-   <TextField fx:id="input" layoutX="14.0" layoutY="362.0" prefHeight="24.0" prefWidth="398.0"
-              promptText="Mensagem HEX"/>
-   <Button fx:id="botaoInterpretar" layoutX="422.0" layoutY="362.0" mnemonicParsing="false"
-           onAction="#onClickDisplayDados" prefHeight="24.0" prefWidth="164.0" text="Interpretar Mensagem"/>
-   <TextArea fx:id="display" editable="false" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT"
-             prefHeight="335.0" prefWidth="569.0" promptText="A mensagem interpretada aparecerá aqui."/>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.fulltime.app.MainAppController">
+   <TextField fx:id="input" layoutX="14.0" layoutY="362.0" prefHeight="24.0" prefWidth="398.0" promptText="Mensagem HEX" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="188.0" />
+   <Button fx:id="botaoInterpretar" defaultButton="true" layoutX="422.0" layoutY="362.0" mnemonicParsing="false" onAction="#onClickDisplayDados" prefHeight="24.0" prefWidth="164.0" text="Interpretar Mensagem" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="14.0" />
+   <TextArea fx:id="display" editable="false" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="569.0" promptText="A mensagem interpretada aparecerá aqui." AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
 </AnchorPane>
