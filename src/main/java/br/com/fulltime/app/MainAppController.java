@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,26 +28,37 @@ public class MainAppController implements Initializable {
     }
 
     @FXML
-    public void onClickDisplayDados (ActionEvent event) {
-        var rawData = input.getText();
-        input.setText("");
-        var interpretador = new Interpretador(Conversor.toHexArray(rawData));
-        var stringBuilder = new StringBuilder();
+    public void onClickDisplayDados(ActionEvent event) {
 
-        if (!interpretador.validarHeader()){
-            display.setText("Erro! Header inválido.\nCertifique-se que a mensagem foi inserida corretamente.");
-            return;
+        try {
+            var rawData = input.getText();
+            input.setText("");
+            Interpretador interpretador;
+            try {
+                interpretador = new Interpretador(Conversor.toHexArray(rawData));
+            } catch (RuntimeException ex) {
+                display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
+                return;
+            }
+            var stringBuilder = new StringBuilder();
+
+            if (!interpretador.validarHeader()) {
+                display.setText("Erro! Header inválido.\nCertifique-se que a mensagem foi inserida corretamente.");
+                return;
+            }
+
+            stringBuilder.append("==========================\n");
+            stringBuilder.append("TAMANHO DO PACOTE: ").append(interpretador.getTamanho()).append("\n");
+            stringBuilder.append("COMANDO: ").append(interpretador.getComando()).append("\n");
+            //        stringBuilder.append("SEQUÊNCIA: " + interpretador.getSequencia() + "\n");
+            stringBuilder.append("==========================\n");
+            stringBuilder.append(interpretador.getDadosFormatados());
+            stringBuilder.append("\n==========================\n");
+
+            display.setText(stringBuilder.toString());
+        } catch (RuntimeException ex) {
+            display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
         }
-
-        stringBuilder.append("==========================\n");
-        stringBuilder.append("TAMANHO DO PACOTE: ").append(interpretador.getTamanho()).append("\n");
-        stringBuilder.append("COMANDO: ").append(interpretador.getComando()).append("\n");
-        //        stringBuilder.append("SEQUÊNCIA: " + interpretador.getSequencia() + "\n");
-        stringBuilder.append("==========================\n");
-        stringBuilder.append(interpretador.getDadosFormatados());
-        stringBuilder.append("\n==========================\n");
-
-        display.setText(stringBuilder.toString());
 
     }
 
