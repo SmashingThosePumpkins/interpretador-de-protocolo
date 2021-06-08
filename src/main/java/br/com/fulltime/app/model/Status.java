@@ -27,6 +27,37 @@ public class Status implements Comando {
         return new String[]{kp, datahora, bateria, pgm, pgm2, particao, eletrificador, zonas, problema, permissaoEletrificador, permissaoPGM, permissaoPGM2, permissaoParticao, permissaoZonas, panico, pararSirene, atualizacao};
     }
 
+    @Override
+    public String getDadosFormatados(String[] array) {
+        var dados = getDados(array);
+        return String.format("""
+                KP = %s
+                DATA / HORA = %s
+                BATERIA = %s
+                ==== PGM ====
+                 %s
+                === PGM 2 ===
+                %s
+                == PARTIÇÃO ==
+                %s
+                =============
+                ELETRIFICADOR = %s
+                === ZONAS ===
+                %s
+                =============
+                PROBLEMAS = %s
+                =============
+                PERMISSÕES:
+                - ELETRIFICADOR = %s
+                - PGM = %s
+                - PGM 2 = %s
+                - PARTIÇÃO = %s
+                - INIBIR ZONAS = %s
+                PÂNICO = %s
+                PARAR SIRENE = %s
+                ATUALIZAÇÃO = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13], dados[14], dados[15], dados[16]);
+    }
+
     private String aplicarAtualizacao(String[] array, int index) {
         switch (array[index]) {
             case "00" -> {

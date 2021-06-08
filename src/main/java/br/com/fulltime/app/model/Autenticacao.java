@@ -20,6 +20,22 @@ public class Autenticacao implements Comando {
         return new String[]{numSerie, imei, mac, modelo, versao, ip, simCard, via, operadora};
     }
 
+    @Override
+    public String getDadosFormatados(String[] array) {
+        var dados = getDados(array);
+        return String.format(
+                """
+                NUMERO DE SERIE = %s
+                IMEI = %s
+                MAC = %s
+                MODELO = %s
+                VERSÃO = %s
+                IP = %s
+                SIMCARD = %s
+                VIA = %s
+                OPERADORA = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8]);
+    }
+
     private String aplicarModelo(String[] array, int index) {
         switch (array[index]) {
             case "A0" -> {

@@ -18,6 +18,21 @@ public class Evento implements Comando {
         return new String[]{conta, qualificador, evento, particao, argumento, contador, statusPart, problema};
     }
 
+    @Override
+    public String getDadosFormatados(String[] array) {
+        var dados = getDados(array);
+        return String.format(
+                """
+                CONTA = %s
+                QUALIFICADOR = %s
+                EVENTO = %s
+                PARTIÇÃO = %s
+                ARGUMENTO = %s
+                CONTADOR = %s
+                STATUS PART. = %s
+                PROBLEMA = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]);
+    }
+
     private String aplicarConta(String[] array, int index) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = index; i < index + 4; i++) {
