@@ -32,15 +32,24 @@ public class Conversor {
     }
 
     public static String[] toHexArray(String rawData) {
-        String[] data;
+        String[] data = new String[rawData.length()];
+
+        // Caso haja RegEx's
         if (rawData.contains(" ")) {
             data = rawData.split(" ");
         } else if (rawData.contains("\\")) {
             data = rawData.split("\\\\");
         } else {
-            throw new RuntimeException();
+        // Caso não hajam RegEx's
+            var contador = 0;
+            for(int i = 0; i < rawData.length() / 2; i++) {
+                data[i] = rawData.charAt(contador++) + "" + rawData.charAt(contador++);
+            }
         }
 
+
+
+        // Caso o primeiro dígito esteja vazio
         if (data[0].isEmpty()) {
             var temp = new String[data.length - 1];
             System.arraycopy(data, 1, temp, 0, data.length - 1);
