@@ -33,30 +33,28 @@ public class MainAppController implements Initializable {
     public void onClickDisplayDados(ActionEvent event) {
 
         try {
-            var rawData = input.getText();
+            display.setText(formatar(input.getText()));
             input.setText("");
-            Interpretador interpretador;
-            interpretador = new Interpretador(Conversor.toHexArray(rawData));
-            var stringBuilder = new StringBuilder();
-
-            if (!interpretador.validarHeader()) {
-                throw new RuntimeException();
-            }
-
-            stringBuilder.append("==========================\n");
-            stringBuilder.append("TAMANHO DO PACOTE: ").append(interpretador.getTamanho()).append("\n");
-            stringBuilder.append("COMANDO: ").append(interpretador.getComando(true)).append("\n");
-            stringBuilder.append("SEQUÊNCIA: ").append(interpretador.getSequencia()).append("\n");
-            stringBuilder.append("==========================\n");
-            stringBuilder.append(interpretador.getDadosFormatados());
-            stringBuilder.append("\n==========================\n");
-
-            display.setText(stringBuilder.toString());
         } catch (RuntimeException ex) {
             display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
         }
 
     }
+
+    private String formatar(String rawData) {
+        var interpretador = new Interpretador(Conversor.toHexArray(rawData));
+        if (!interpretador.validarHeader()) {
+            throw new RuntimeException();
+        }
+        return "=============\n" +
+                "TAMANHO DO PACOTE: " + interpretador.getTamanho() + "\n" +
+                "COMANDO: " + interpretador.getComando(true) + "\n" +
+                "SEQUÊNCIA: " + interpretador.getSequencia() + "\n" +
+                "=============\n" +
+                interpretador.getDadosFormatados() + "\n" +
+                "=============\n";
+    }
+
 
     @FXML
     public void onClickLimpar(ActionEvent event) {
