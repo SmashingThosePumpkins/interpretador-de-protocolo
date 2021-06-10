@@ -19,12 +19,16 @@ public class Interpretador {
         return Integer.parseInt(array[1], 16);
     }
 
+    public String getSequencia() {
+        return array[2];
+    }
+
     public int getComando() {
         return Integer.parseInt(array[3], 16);
     }
 
-    public String getComando(boolean pretty) {
-        if(!pretty){
+    public String getComando(boolean asString) {
+        if(!asString){
             return getComando() + "";
         }
 

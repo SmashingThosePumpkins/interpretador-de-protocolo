@@ -36,23 +36,17 @@ public class MainAppController implements Initializable {
             var rawData = input.getText();
             input.setText("");
             Interpretador interpretador;
-            try {
-                interpretador = new Interpretador(Conversor.toHexArray(rawData));
-            } catch (RuntimeException ex) {
-                display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
-                return;
-            }
+            interpretador = new Interpretador(Conversor.toHexArray(rawData));
             var stringBuilder = new StringBuilder();
 
             if (!interpretador.validarHeader()) {
-                display.setText("Erro! Header inválido.\nCertifique-se que a mensagem foi inserida corretamente.");
-                return;
+                throw new RuntimeException();
             }
 
             stringBuilder.append("==========================\n");
             stringBuilder.append("TAMANHO DO PACOTE: ").append(interpretador.getTamanho()).append("\n");
             stringBuilder.append("COMANDO: ").append(interpretador.getComando(true)).append("\n");
-            //        stringBuilder.append("SEQUÊNCIA: " + interpretador.getSequencia() + "\n");
+            stringBuilder.append("SEQUÊNCIA: ").append(interpretador.getSequencia()).append("\n");
             stringBuilder.append("==========================\n");
             stringBuilder.append(interpretador.getDadosFormatados());
             stringBuilder.append("\n==========================\n");
