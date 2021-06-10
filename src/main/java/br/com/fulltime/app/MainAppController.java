@@ -21,6 +21,8 @@ public class MainAppController implements Initializable {
     public TextField input;
     @FXML
     public Button botaoInterpretar;
+    @FXML
+    public Button botaoLimpar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -60,6 +62,11 @@ public class MainAppController implements Initializable {
             display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
         }
 
+    }
+
+    @FXML
+    public void onClickLimpar(ActionEvent event) {
+        display.setText("");
     }
 
 }
