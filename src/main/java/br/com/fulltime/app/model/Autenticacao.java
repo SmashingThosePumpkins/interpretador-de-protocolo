@@ -37,6 +37,26 @@ public class Autenticacao implements Comando {
     }
 
     private String aplicarModelo(String[] array, int index) {
+
+//        return switch (array[index]){
+//            case "A0" -> "ACTIVE 32 DUO";
+//            case "A1" -> "ACTIVE 20 ULTRA";
+//
+//            case "A2" -> {
+//                return "ACTIVE 8 ULTRA";
+//            }
+//            case "A3" -> {
+//                return "ACTIVE 20 ETHERNET";
+//            }
+//            case "A4" -> {
+//                return "ACTIVE 100 BUS";
+//            }
+//            case "A5" -> {
+//                return "ACTIVE 20 BUS";
+//            }
+//            default -> "";
+//        };
+
         switch (array[index]) {
             case "A0" -> {
                 return "ACTIVE 32 DUO";
@@ -85,6 +105,11 @@ public class Autenticacao implements Comando {
     }
 
     private String aplicarIP(String[] array, int index) {
+//        if("01"){
+//            return "IP1";
+//        }
+//        return "IP2";
+
         switch (array[index]) {
             case "01" -> {
                 return "IP1";
@@ -124,33 +149,8 @@ public class Autenticacao implements Comando {
     }
 
     private String aplicarOperadora(String[] array, int index) {
-        switch (array[index]) {
-            case "00" -> {
-                return "VIVO";
-            }
-            case "01" -> {
-                return "BRASIL TELECOM";
-            }
-            case "02" -> {
-                return "CLARO";
-            }
-            case "03" -> {
-                return "OI";
-            }
-            case "04" -> {
-                return "TIM";
-            }
-            case "05" -> {
-                return "TELEMIG CELULAR";
-            }
-            case "06" -> {
-                return "N/A";
-            }
-            case "07" -> {
-                return "CONFIGURAÇÕES DA OPERADORA PERSONALIZADA";
-            }
-            default -> throw new NoSuchElementException();
-        }
+        EnumOperadoras operadora = EnumOperadoras.getFromValue(array[index]);
+        return operadora.name();
     }
 
 }

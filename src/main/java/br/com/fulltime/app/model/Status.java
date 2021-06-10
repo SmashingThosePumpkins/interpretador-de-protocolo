@@ -19,30 +19,28 @@ public class Status implements Comando {
                 permissaoPGM = aplicarPermPGM(array, 88),
                 permissaoPGM2 = aplicarPermPGM(array, 118),
                 permissaoParticao = aplicarPermParticao(array, 89),
-                permissaoZonas = aplicarPermZonas(array, 105),
-                panico = aplicarPanico(array, 120),
-                pararSirene = aplicarPararSirene(array, 121),
-                atualizacao = aplicarAtualizacao(array, 122);
+                permissaoZonas = aplicarPermZonas(array, 105);
 
-        return new String[]{kp, datahora, bateria, pgm, pgm2, particao, eletrificador, zonas, problema, permissaoEletrificador, permissaoPGM, permissaoPGM2, permissaoParticao, permissaoZonas, panico, pararSirene, atualizacao};
+        return new String[]{kp, datahora, bateria, pgm, pgm2, particao, eletrificador, zonas, problema, permissaoEletrificador, permissaoPGM, permissaoPGM2, permissaoParticao, permissaoZonas};
     }
 
     @Override
     public String getDadosFormatados(String[] array) {
         var dados = getDados(array);
+
         return String.format("""
                 KP = %s
                 DATA / HORA = %s
                 BATERIA = %s
                 ==== PGM ====
-                 %s
+                %s
                 === PGM 2 ===
                 %s
-                == PARTIÇÃO ==
+                ==PARTIÇÃO ==
                 %s
                 =============
                 ELETRIFICADOR = %s
-                === ZONAS ===
+                == = ZONAS == =
                 %s
                 =============
                 PROBLEMAS = %s
@@ -52,52 +50,7 @@ public class Status implements Comando {
                 - PGM = %s
                 - PGM 2 = %s
                 - PARTIÇÃO = %s
-                - INIBIR ZONAS = %s
-                PÂNICO = %s
-                PARAR SIRENE = %s
-                ATUALIZAÇÃO = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13], dados[14], dados[15], dados[16]);
-    }
-
-    private String aplicarAtualizacao(String[] array, int index) {
-        switch (array[index]) {
-            case "00" -> {
-                return "FALSE";
-            }
-            case "01" -> {
-                return "TRUE";
-            }
-            default -> {
-                return "UNKNOWN";
-            }
-        }
-    }
-
-    private String aplicarPararSirene(String[] array, int index) {
-        switch (array[index]) {
-            case "00" -> {
-                return "FALSE";
-            }
-            case "01" -> {
-                return "TRUE";
-            }
-            default -> {
-                return "UNKNOWN";
-            }
-        }
-    }
-
-    private String aplicarPanico(String[] array, int index) {
-        switch (array[index]) {
-            case "00" -> {
-                return "FALSE";
-            }
-            case "01" -> {
-                return "TRUE";
-            }
-            default -> {
-                return "UNKNOWN";
-            }
-        }
+                - INIBIR ZONAS = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13]);
     }
 
     private String aplicarPermZonas(String[] array, int index) {
@@ -129,11 +82,11 @@ public class Status implements Comando {
 
             zonas.append(String.format("ZONA %03d = ", contador++))
                     .append(statusZona(hex1))
-                    .append(String.format(" | ZONA %03d = ", contador++))
+                    .append(String.format("\nZONA %03d = ", contador++))
                     .append(statusZona(hex2))
                     .append('\n');
         }
-        return zonas.toString();
+        return zonas.toString().trim();
     }
 
     private String statusZona(String zona) {
@@ -188,18 +141,52 @@ public class Status implements Comando {
                 return "ARMADO, COM DESPARO";
             }
         }
-        return "null";
+        return "DESCONHECIDO";
     }
 
     private String aplicarParticao(String[] array, int index) {
         StringBuilder stringBuilder = new StringBuilder();
+        var contador = 0;
         for (int i = index; i < index + 16; i++) {
-            stringBuilder.append("PGM 0x").append(array[i]).append(" = ");
+            stringBuilder.append("PGM ")
+                    .append(contador++)
+                    .append(" = ")
+                    .append(statusParticao(array[index]))
+                    .append('\n');
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
+    }
+
+    private String statusParticao(String hex) {
+        var status = new StringBuilder();
+        if (hex.charAt(1) == '0') {
+            return "NÃO PROGRAMADA";
+        }
+
+        // Verificar o estado da partição
+        if (hex.charAt(1) == '1') {
+            status.append("DESARMADA");
+        } else if (hex.charAt(1) == '2') {
+            status.append("ARMADA");
+        } else {
+            status.append("ARMADA STAY");
+        }
+
+        // Verificar se está em disparo
+        if (hex.charAt(0) == '8') {
+            status.append(", EM DISPARO");
+        } else {
+            status.append(", SEM DISPARO");
+        }
+
+        return status.toString();
     }
 
     private String aplicarPGM(String[] array, int index) {
+        if (array.length <= index) {
+            return "N/A";
+        }
+
         var hex = array[index];
         BitSet bitSet = BitSet.valueOf(new long[]{Long.valueOf(hex, 16)});
 
@@ -213,12 +200,14 @@ public class Status implements Comando {
                 stringBuilder.append("DESACIONADA\n");
             }
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
     }
 
     private String aplicarBateria(String[] array, int index) {
-        var val = Double.parseDouble(array[index]);
+        var val = (double) Integer.parseInt(array[index], 16);
         String porcentagem;
+        double valorDivido = val / 14;
+
         if (val / 14 > 12.5) {
             porcentagem = "100%";
         } else if (val / 14 > 12) {
