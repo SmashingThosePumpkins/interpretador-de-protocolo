@@ -51,7 +51,7 @@ public class MainAppController implements Initializable {
 
         try {
             if (Conversor.toHexArray(dataTemp).length < interpretador.getTamanho()) {
-                display.setText("Mensagem parcial. Insira o resto para prosseguir.");
+                display.appendText("\n\nMensagem parcial. Insira o resto para prosseguir.");
                 return;
             }
 
@@ -60,13 +60,14 @@ public class MainAppController implements Initializable {
                 throw new RuntimeException();
             }
 
-            display.setText(formatar("" + interpretador.getTamanho(),
+            if (display.getText().contains("\n")) {display.appendText("\n\n");}
+            display.appendText(formatar("" + interpretador.getTamanho(),
                     "" + interpretador.getComando(true),
                     interpretador.getSequencia(),
                     interpretador.getDadosFormatados()));
             dataTemp = "";
         } catch (RuntimeException ex) {
-            display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
+            display.appendText("\n\nErro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
         }
 
     }
@@ -90,7 +91,8 @@ public class MainAppController implements Initializable {
     }
 
     private void help() {
-        display.setText("""
+        display.appendText("""
+                
                 Comandos disponíveis no momento:
                 >clear (Limpar display)
                 >default (Mensagem default do display)
@@ -108,7 +110,7 @@ public class MainAppController implements Initializable {
     }
 
     public void echo(String string) {
-        display.setText(string);
+        display.appendText("\n\n" + string);
     }
 
     public void mode(String mode) {
