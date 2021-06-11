@@ -28,7 +28,8 @@ public class Status implements Comando {
     public String getDadosFormatados(String[] array) {
         var dados = getDados(array);
 
-        return String.format("""
+        return String.format(
+                """
                 KP = %s
                 DATA / HORA = %s
                 BATERIA = %s
@@ -36,21 +37,27 @@ public class Status implements Comando {
                 %s
                 === PGM 2 ===
                 %s
-                ==PARTIÇÃO ==
+                == PARTIÇÃO ==
                 %s
-                =============
-                ELETRIFICADOR = %s
-                == = ZONAS == =
+                =ELETRIFICADOR=
+                %s
+                == ZONAS ==
                 %s
                 =============
                 PROBLEMAS = %s
                 =============
                 PERMISSÕES:
-                - ELETRIFICADOR = %s
-                - PGM = %s
-                - PGM 2 = %s
-                - PARTIÇÃO = %s
-                - INIBIR ZONAS = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13]);
+                - ELETRIFICADOR
+                %s
+                - PGM
+                %s
+                - PGM 2
+                %s
+                - PARTIÇÃO
+                %s
+                - INIBIR ZONAS
+                %s
+                """, dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13]);
     }
 
     private String aplicarPermZonas(String[] array, int index) {
@@ -58,15 +65,60 @@ public class Status implements Comando {
     }
 
     private String aplicarPermParticao(String[] array, int index) {
-        return "null";
+        StringBuilder stringBuilder = new StringBuilder();
+        var contador = 0;
+        for (int i = index; i < index + 16; i++) {
+            stringBuilder.append("      PGM ")
+                    .append(contador++)
+                    .append(" = ")
+                    .append(statusPermParticao(array[index]))
+                    .append('\n');
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
+        return stringBuilder.toString();
+    }
+
+    private String statusPermParticao(String hex) {
+        return switch (hex.charAt(1)){
+            case '0' -> "PERMISSÃO PARA DESARMAR A PARTIÇÃO";
+            case '1' -> "PERMISSÃO PARA ARMAR A PARTIÇÃO";
+            case '2' -> "PERMISSÃO PARA ARMAR A PARTIÇÃO EM STAY";
+            case '3' -> "PERMISSÃO PARA ARMAR A PARTIÇÃO EM AWAY";
+            case '4' -> "A PARTIÇÃO ESTÁ PRONTA";
+            default -> "DESCONHECIDO";
+        };
     }
 
     private String aplicarPermPGM(String[] array, int index) {
-        return "null";
+        if (array.length <= index) {
+            return "     N/A";
+        }
+
+        var hex = array[index];
+        BitSet bitSet = BitSet.valueOf(new long[]{Long.valueOf(hex, 16)});
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int contador = 1;
+        for (int i = 0; i < 8; i++) {
+            stringBuilder.append("     PGM ").append(contador++).append(" = ");
+            if (bitSet.get(i)) {
+                stringBuilder.append("PERMITIDO\n");
+            } else {
+                stringBuilder.append("NÃO PERMITIDO\n");
+            }
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
+        return stringBuilder.toString();
     }
 
     private String aplicarPermEletrificador(String[] array, int index) {
-        return "null";
+        return switch (array[index]) {
+            case "00" -> "     NÃO PERMITIDO";
+            case "01" -> "     PERMITIDO";
+            default -> "     DESCONHECIDO";
+        };
     }
 
     private String aplicarProblema(String[] array, int index) {

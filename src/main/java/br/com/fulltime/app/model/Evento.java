@@ -30,7 +30,8 @@ public class Evento implements Comando {
                 ARGUMENTO = %s
                 CONTADOR = %s
                 STATUS PART. = %s
-                PROBLEMA = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]);
+                PROBLEMA = %s
+                """, dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]);
     }
 
     private String aplicarConta(String[] array, int index) {

@@ -46,13 +46,13 @@ public class MainAppController implements Initializable {
         if (!interpretador.validarHeader()) {
             throw new RuntimeException();
         }
-        return "=============\n" +
+        return "============\n" +
                 "TAMANHO DO PACOTE: " + interpretador.getTamanho() + "\n" +
                 "COMANDO: " + interpretador.getComando(true) + "\n" +
                 "SEQUÊNCIA: " + interpretador.getSequencia() + "\n" +
-                "=============\n" +
-                interpretador.getDadosFormatados() + "\n" +
-                "=============\n";
+                "===========\n" +
+                interpretador.getDadosFormatados() +
+                "===========\n";
     }
 
 

@@ -33,21 +33,12 @@ public class Autenticacao implements Comando {
                         IP = %s
                         SIMCARD = %s
                         VIA = %s
-                        OPERADORA = %s""", dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8]);
+                        OPERADORA = %s
+                        """, dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8]);
     }
 
     private String aplicarModelo(String[] array, int index) {
-
-        return switch (array[index]) {
-            case "A0" -> "ACTIVE 32 DUO";
-            case "A1" -> "ACTIVE 20 ULTRA";
-            case "A2" -> "ACTIVE 8 ULTRA";
-            case "A3" -> "ACTIVE 20 ETHERNET";
-            case "A4" -> "ACTIVE 100 BUS";
-            case "A5" -> "ACTIVE 20 BUS";
-            default -> "";
-        };
-
+        return EnumModelos.getFromValue(array[index]).name().replace('_', ' ');
     }
 
     private String aplicarVersao(String[] array, int index) {
@@ -99,8 +90,7 @@ public class Autenticacao implements Comando {
     }
 
     private String aplicarOperadora(String[] array, int index) {
-        EnumOperadoras operadora = EnumOperadoras.getFromValue(array[index]);
-        return operadora.name();
+        return EnumOperadoras.getFromValue(array[index]).name();
     }
 
 }
