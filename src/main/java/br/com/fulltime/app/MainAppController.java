@@ -8,8 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,6 +24,8 @@ public class MainAppController implements Initializable {
     public Button botaoInterpretar;
     @FXML
     public Button botaoLimpar;
+    @FXML
+    public AnchorPane anchorPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -33,6 +36,12 @@ public class MainAppController implements Initializable {
 
     @FXML
     public void onClickDisplayDados(ActionEvent event) {
+
+        if (input.getText().trim().charAt(0) == '>') {
+            dissect(input.getText().substring(1).trim());
+            input.setText("");
+            return;
+        }
 
         dataTemp = (dataTemp + " " + input.getText().trim()).trim();
         input.setText("");
@@ -59,6 +68,26 @@ public class MainAppController implements Initializable {
         }
 
     }
+
+    private void dissect(String command) {
+        if (command.startsWith("mode")) {
+            mode(command.substring(4).trim());
+        }
+    }
+
+    @FXML
+    public void mode(String mode) {
+        if (mode.startsWith("dark")) {
+            anchorPane.setStyle("-fx-background-color: #0a0a0a");
+        }
+        if (mode.startsWith("light")) {
+            anchorPane.setStyle("-fx-background-color: #ffffff");
+        }
+        if (mode.startsWith("red")) {
+            anchorPane.setStyle("-fx-background-color: #923131");
+        }
+    }
+
 
     private String formatar(String tamanho, String comando, String sequencia, String dados) {
         return "============\n" +
