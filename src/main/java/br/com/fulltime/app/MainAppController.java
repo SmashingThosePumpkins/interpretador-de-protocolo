@@ -29,30 +29,43 @@ public class MainAppController implements Initializable {
 
     }
 
+    private String dataTemp = "";
+
     @FXML
     public void onClickDisplayDados(ActionEvent event) {
 
+        dataTemp = (dataTemp + " " + input.getText().trim()).trim();
+        input.setText("");
+        var interpretador = new Interpretador(Conversor.toHexArray(dataTemp));
+
         try {
-            display.setText(formatar(input.getText()));
-            input.setText("");
+            if (Conversor.toHexArray(dataTemp).length < interpretador.getTamanho()) {
+                display.setText("Mensagem parcial. Insira o resto para prosseguir.");
+                return;
+            }
+
+            if (!interpretador.validarHeader()) {
+                dataTemp = "";
+                throw new RuntimeException();
+            }
+
+            display.setText(formatar("" + interpretador.getTamanho(),
+                    "" + interpretador.getComando(true),
+                    interpretador.getSequencia(),
+                    interpretador.getDadosFormatados()));
+            dataTemp = "";
         } catch (RuntimeException ex) {
             display.setText("Erro! Mensagem inválida.\nCertifique-se que a mensagem foi inserida corretamente (Hexadecimal)");
         }
 
     }
 
-    private String formatar(String rawData) {
-        var interpretador = new Interpretador(Conversor.toHexArray(rawData));
-        if (!interpretador.validarHeader()) {
-            throw new RuntimeException();
-        }
+    private String formatar(String tamanho, String comando, String sequencia, String dados) {
         return "============\n" +
-                "TAMANHO DO PACOTE: " + interpretador.getTamanho() + " BYTES" + "\n" +
-                "COMANDO: " + interpretador.getComando(true) + "\n" +
-                "SEQUÊNCIA: " + interpretador.getSequencia() + "\n" +
-                "===========\n" +
-                interpretador.getDadosFormatados() +
-                "===========\n";
+                "TAMANHO DO PACOTE: " + tamanho + " BYTES" + "\n" +
+                "COMANDO: " + comando + "\n" +
+                "SEQUÊNCIA: " + sequencia + "\n" +
+                "===========\n" + dados + "===========\n";
     }
 
 
