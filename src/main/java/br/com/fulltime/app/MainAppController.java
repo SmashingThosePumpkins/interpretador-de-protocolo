@@ -91,8 +91,8 @@ public class MainAppController implements Initializable {
     }
 
     private void help() {
+        if (display.getText().contains("\n")) {display.appendText("\n\n");}
         display.appendText("""
-                
                 Comandos disponíveis no momento:
                 >clear (Limpar display)
                 >default (Mensagem default do display)
@@ -106,7 +106,7 @@ public class MainAppController implements Initializable {
     }
 
     private void defaultDisplay() {
-        display.setText("Versão WIP\n\nO pacote a ser interpretado aparecerá aqui. (Pacotes de exemplo disponíveis no console)");
+        display.setText("Versão WIP\n\nO pacote a ser interpretado aparecerá aqui. (Pacotes de exemplo disponíveis no console)\n\nDigite >help para uma lista de comandos.");
     }
 
     public void echo(String string) {
