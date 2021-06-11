@@ -1,9 +1,10 @@
 package br.com.fulltime.app.model;
 
 import java.util.BitSet;
-import java.util.NoSuchElementException;
 
 public class Status implements Comando {
+    private int numeroDeZonas = 0;
+
     @Override
     public String[] getDados(String[] array) {
         String kp = aplicarKP(array, 4),
@@ -30,38 +31,56 @@ public class Status implements Comando {
 
         return String.format(
                 """
-                KP = %s
-                DATA / HORA = %s
-                BATERIA = %s
-                ==== PGM ====
-                %s
-                === PGM 2 ===
-                %s
-                == PARTIÇÃO ==
-                %s
-                =ELETRIFICADOR=
-                %s
-                == ZONAS ==
-                %s
-                =============
-                PROBLEMAS = %s
-                =============
-                PERMISSÕES:
-                - ELETRIFICADOR
-                %s
-                - PGM
-                %s
-                - PGM 2
-                %s
-                - PARTIÇÃO
-                %s
-                - INIBIR ZONAS
-                %s
-                """, dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13]);
+                        KP = %s
+                        DATA / HORA = %s
+                        BATERIA = %s
+                        ==== PGM ====
+                        %s
+                        === PGM 2 ===
+                        %s
+                        == PARTIÇÃO ==
+                        %s
+                        =ELETRIFICADOR=
+                        %s
+                        == ZONAS ==
+                        %s
+                        =============
+                        PROBLEMAS = %s
+                        =============
+                        PERMISSÕES:
+                        - ELETRIFICADOR
+                        %s
+                        - PGM
+                        %s
+                        - PGM 2
+                        %s
+                        - PARTIÇÃO
+                        %s
+                        - INIBIR ZONAS
+                        %s
+                        """, dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7], dados[8], dados[9], dados[10], dados[11], dados[12], dados[13]);
     }
 
     private String aplicarPermZonas(String[] array, int index) {
-        return "null";
+        var zonas = new StringBuilder();
+        String hex;
+        int contador = 0;
+        for (int i = index; i < index + 13; i++) {
+            var bitSet = BitSet.valueOf(new long[]{Long.valueOf(array[i], 16)});
+            for (int j = 0; j < 8; j++) {
+                contador++;
+                if (contador <= numeroDeZonas) {
+                    zonas.append("     PGM ").append(contador).append(" = ");
+                    if (bitSet.get(j)) {
+                        zonas.append("PERMITIDO\n");
+                    } else {
+                        zonas.append("NÃO PERMITIDO\n");
+                    }
+                }
+            }
+        }
+        zonas.deleteCharAt(zonas.length() - 1);
+        return zonas.toString();
     }
 
     private String aplicarPermParticao(String[] array, int index) {
@@ -80,7 +99,7 @@ public class Status implements Comando {
     }
 
     private String statusPermParticao(String hex) {
-        return switch (hex.charAt(1)){
+        return switch (hex.charAt(1)) {
             case '0' -> "PERMISSÃO PARA DESARMAR A PARTIÇÃO";
             case '1' -> "PERMISSÃO PARA ARMAR A PARTIÇÃO";
             case '2' -> "PERMISSÃO PARA ARMAR A PARTIÇÃO EM STAY";
@@ -115,8 +134,8 @@ public class Status implements Comando {
 
     private String aplicarPermEletrificador(String[] array, int index) {
         return switch (array[index]) {
-            case "00" -> "     NÃO PERMITIDO";
-            case "01" -> "     PERMITIDO";
+            case "00" -> "     ACIONAMENTO NÃO PERMITIDO";
+            case "01" -> "     ACIONAMENTO PERMITIDO";
             default -> "     DESCONHECIDO";
         };
     }
@@ -132,68 +151,46 @@ public class Status implements Comando {
             String hex1 = array[index + i].charAt(0) + "";
             String hex2 = array[index + i].charAt(1) + "";
 
-            zonas.append(String.format("ZONA %03d = ", contador++))
-                    .append(statusZona(hex1))
-                    .append(String.format("\nZONA %03d = ", contador++))
-                    .append(statusZona(hex2))
-                    .append('\n');
+            if (!hex1.equals("0")) {
+                zonas.append(String.format("ZONA %03d = ", contador++))
+                        .append(statusZona(hex1))
+                        .append('\n');
+                numeroDeZonas++;
+            }
+            if (!hex2.equals("0")) {
+                zonas.append(String.format("ZONA %03d = ", contador++))
+                        .append(statusZona(hex2))
+                        .append('\n');
+                numeroDeZonas++;
+            }
         }
         return zonas.toString().trim();
     }
 
     private String statusZona(String zona) {
-        switch (zona) {
-            case "0" -> {
-                return "ZONA DESABILITADA";
-            }
-            case "1" -> {
-                return "ZONA INIBIDA";
-            }
-            case "2" -> {
-                return "ZONA EM DESPARO";
-            }
-            case "3" -> {
-                return "SENSOR SEM COMUNICAÇÃO";
-            }
-            case "4" -> {
-                return "ZONA EM CURTO";
-            }
-            case "5" -> {
-                return "TAMPER ABERTO";
-            }
-            case "6" -> {
-                return "BATERIA BAIXA";
-            }
-            case "7" -> {
-                return "ZONA ABERTA";
-            }
-            case "8" -> {
-                return "ZONA FECHADA";
-            }
-        }
-        return "UNKNOWN";
+        return switch (zona) {
+            case "0" -> "ZONA DESABILITADA";
+            case "1" -> "ZONA INIBIDA";
+            case "2" -> "ZONA EM DESPARO";
+            case "3" -> "SENSOR SEM COMUNICAÇÃO";
+            case "4" -> "ZONA EM CURTO";
+            case "5" -> "TAMPER ABERTO";
+            case "6" -> "BATERIA BAIXA";
+            case "7" -> "ZONA ABERTA";
+            case "8" -> "ZONA FECHADA";
+            default -> "UNKNOWN";
+        };
     }
 
     private String aplicarEletrificador(String[] array, int index) {
-        var hex = array[index];
-        switch (hex) {
-            case "00" -> {
-                return "NÃO PROGRAMADO";
-            }
-            case "01" -> {
-                return "DESARMADO, SEM DISPARO";
-            }
-            case "02" -> {
-                return "ARMADO, SEM DISPARO";
-            }
-            case "81" -> {
-                return "DESARMADO, COM DISPARO";
-            }
-            case "82" -> {
-                return "ARMADO, COM DESPARO";
-            }
-        }
-        return "DESCONHECIDO";
+        return switch (array[index]) {
+            case "00" -> "NÃO PROGRAMADO";
+            case "01" -> "DESARMADO, SEM DISPARO";
+            case "02" -> "ARMADO, SEM DISPARO";
+            case "81" -> "DESARMADO, COM DISPARO";
+            case "82" -> "ARMADO, COM DESPARO";
+            default -> "UNKNOWN";
+        };
     }
 
     private String aplicarParticao(String[] array, int index) {
@@ -257,22 +254,23 @@ public class Status implements Comando {
 
     private String aplicarBateria(String[] array, int index) {
         var val = (double) Integer.parseInt(array[index], 16);
+        var div = val / 14.0;
         String porcentagem;
         double valorDivido = val / 14;
 
-        if (val / 14 > 12.5) {
+        if (div > 12.5) {
             porcentagem = "100%";
-        } else if (val / 14 > 12) {
+        } else if (div > 12) {
             porcentagem = "80%";
-        } else if (val / 14 > 11.5) {
+        } else if (div > 11.5) {
             porcentagem = "60%";
-        } else if (val / 14 > 11) {
+        } else if (div > 11) {
             porcentagem = "40%";
-        } else if (val / 14 > 10.5) {
+        } else if (div > 10.5) {
             porcentagem = "20%";
-        } else if (val / 14 <= 10.5) {
+        } else if (div <= 10.5) {
             porcentagem = "VERMELHO";
-        } else if (val / 14 < 10) {
+        } else if (div < 10) {
             porcentagem = "0%";
         } else {
             return null;

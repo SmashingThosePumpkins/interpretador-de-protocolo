@@ -47,7 +47,7 @@ public class MainAppController implements Initializable {
             throw new RuntimeException();
         }
         return "============\n" +
-                "TAMANHO DO PACOTE: " + interpretador.getTamanho() + "\n" +
+                "TAMANHO DO PACOTE: " + interpretador.getTamanho() + " BYTES" + "\n" +
                 "COMANDO: " + interpretador.getComando(true) + "\n" +
                 "SEQUÊNCIA: " + interpretador.getSequencia() + "\n" +
                 "===========\n" +
