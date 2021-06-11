@@ -8,9 +8,9 @@ public class Autenticacao implements Comando {
 
     public String[] getDados(String[] array) {
 
-        String numSerie = aplicarNumero(array, 4, 14),
-                imei = aplicarNumero(array, 14, 29),
-                mac = aplicarNumero(array, 29, 41),
+        String numSerie = aplicarNumSerie(array, 4, 14),
+                imei = aplicarImei(array, 14, 29),
+                mac = aplicarMac(array, 29, 41),
                 modelo = aplicarModelo(array, 41),
                 versao = aplicarVersao(array, 42),
                 ip = aplicarIP(array, 45),
@@ -20,6 +20,22 @@ public class Autenticacao implements Comando {
 
 
         return new String[]{numSerie, imei, mac, modelo, versao, ip, simCard, via, operadora};
+    }
+
+    private String aplicarNumSerie(String[] array, int from, int to) {
+        return aplicarNumero(array, from, to);
+    }
+
+    private String aplicarImei(String[] array, int from, int to) {
+        return aplicarNumero(array, from, to);
+    }
+
+    private String aplicarMac(String[] array, int from, int to) {
+        var numero = aplicarNumero(array, from, to);
+        if (numero.equals("ÿÿÿÿÿÿÿÿÿÿÿÿ")) {
+            return "N/A";
+        }
+        return numero;
     }
 
     @Override
