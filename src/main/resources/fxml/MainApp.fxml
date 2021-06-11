@@ -6,6 +6,6 @@
 <AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.fulltime.app.MainAppController">
    <TextField fx:id="input" layoutX="14.0" layoutY="362.0" prefHeight="26.0" prefWidth="330.0" promptText="Mensagem HEX" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="256.0" />
    <Button fx:id="botaoInterpretar" defaultButton="true" layoutX="351.0" layoutY="363.0" mnemonicParsing="false" onAction="#onClickDisplayDados" prefHeight="24.0" prefWidth="165.0" text="Interpretar Mensagem" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="84.0" />
-   <TextArea fx:id="display" editable="false" layoutX="16.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="569.0" text="Versão WIP&#10;&#10;O pacote a ser interpretado aparecerá aqui. (Pacotes de exemplo disponíveis no console)" wrapText="true" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="14.0" />
+   <TextArea fx:id="display" editable="false" layoutX="16.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="335.0" prefWidth="569.0" wrapText="true" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="14.0" />
    <Button fx:id="botaoLimpar" layoutX="521.0" layoutY="363.0" mnemonicParsing="false" onAction="#onClickLimpar" text="Limpar" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="15.0" />
 </AnchorPane>

@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainAppController implements Initializable {
@@ -29,7 +30,8 @@ public class MainAppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        defaultDisplay();
+        mode("light");
     }
 
     private String dataTemp = "";
@@ -70,20 +72,53 @@ public class MainAppController implements Initializable {
     }
 
     private void dissect(String command) {
-        if (command.startsWith("mode")) {
+        if (command.toLowerCase().startsWith("mode")) {
             mode(command.substring(4).trim());
+        }
+        if (command.toLowerCase().startsWith("echo")) {
+            echo(command.substring(4).trim());
+        }
+        if (command.toLowerCase().startsWith("clear")) {
+            clear();
+        }
+        if (command.toLowerCase().startsWith("default")) {
+            defaultDisplay();
+        }
+        if (command.toLowerCase().startsWith("help")) {
+            help();
         }
     }
 
-    @FXML
+    private void help() {
+        display.setText("""
+                Comandos disponíveis no momento:
+                >clear (Limpar display)
+                >default (Mensagem default do display)
+                >echo [args] (Repetir uma mensagem args no display)
+                >help (Exibir esta mensagem)
+                >mode [dark|light|red] (Mudar a cor do background)""");
+    }
+
+    private void clear() {
+        display.setText("");
+    }
+
+    private void defaultDisplay() {
+        display.setText("Versão WIP\n\nO pacote a ser interpretado aparecerá aqui. (Pacotes de exemplo disponíveis no console)");
+    }
+
+    public void echo(String string) {
+        display.setText(string);
+    }
+
     public void mode(String mode) {
-        if (mode.startsWith("dark")) {
+        if (mode.toLowerCase().startsWith("dark")) {
             anchorPane.setStyle("-fx-background-color: #0a0a0a");
         }
-        if (mode.startsWith("light")) {
+        if (mode.toLowerCase().startsWith("light")) {
             anchorPane.setStyle("-fx-background-color: #ffffff");
         }
-        if (mode.startsWith("red")) {
+        if (mode.toLowerCase().startsWith("red")) {
             anchorPane.setStyle("-fx-background-color: #923131");
         }
     }
