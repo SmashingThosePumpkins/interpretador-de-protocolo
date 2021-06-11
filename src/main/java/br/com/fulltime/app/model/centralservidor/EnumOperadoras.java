@@ -1,4 +1,4 @@
-package br.com.fulltime.app.model;
+package br.com.fulltime.app.model.centralservidor;
 
 import java.util.stream.Stream;
 

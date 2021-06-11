@@ -1,10 +1,15 @@
 package br.com.fulltime.app.model;
 
+import br.com.fulltime.app.model.centralservidor.Autenticacao;
+import br.com.fulltime.app.model.centralservidor.Evento;
+import br.com.fulltime.app.model.centralservidor.Status;
+
 public class Interpretador {
 
     final int COD_AUTENTICACAO = 33;
     final int COD_EVENTO = 36;
     final int COD_STATUS = 86;
+    final int COD_STATUS_2 = 80;
     String[] array;
 
     public Interpretador(String[] array) {
@@ -28,22 +33,16 @@ public class Interpretador {
     }
 
     public String getComando(boolean asString) {
-        if(!asString){
+        if (!asString) {
             return getComando() + "";
         }
 
-        switch (getComando()) {
-            case COD_AUTENTICACAO -> {
-                return "AUTENTICAÇÃO";
-            }
-            case COD_EVENTO -> {
-                return "EVENTO";
-            }
-            case COD_STATUS -> {
-                return "STATUS";
-            }
-        }
-        return null;
+        return switch (getComando()) {
+            case COD_AUTENTICACAO -> "AUTENTICAÇÃO";
+            case COD_EVENTO -> "EVENTO";
+            case COD_STATUS, COD_STATUS_2 -> "STATUS";
+            default -> "null";
+        };
     }
 
     public String[] getDados() {
@@ -56,7 +55,7 @@ public class Interpretador {
                 var evento = new Evento();
                 return evento.getDados(array);
             }
-            case COD_STATUS -> {
+            case COD_STATUS, COD_STATUS_2 -> {
                 var status = new Status();
                 return status.getDados(array);
             }
@@ -68,7 +67,7 @@ public class Interpretador {
 
     public String getDadosFormatados() {
         switch (getComando()) {
-            case COD_AUTENTICACAO ->{
+            case COD_AUTENTICACAO -> {
                 var autenticacao = new Autenticacao();
                 return autenticacao.getDadosFormatados(array);
             }
@@ -76,7 +75,7 @@ public class Interpretador {
                 var evento = new Evento();
                 return evento.getDadosFormatados(array);
             }
-            case COD_STATUS -> {
+            case COD_STATUS, COD_STATUS_2 -> {
                 var status = new Status();
                 return status.getDadosFormatados(array);
             }
