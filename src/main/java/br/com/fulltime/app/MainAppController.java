@@ -135,6 +135,7 @@ public class MainAppController implements Initializable {
 
     @FXML
     public void onClickLimpar(ActionEvent event) {
+        dataTemp = "";
         display.setText("");
     }
 
